@@ -1,0 +1,30 @@
+; Name: Harshvi Patel
+; This program creates an array of 5 DWORDs with values 1,2,3,4,5
+; It calculates the sum of all elements and stores it in memory 
+
+.386
+.model flat,stdcall
+.stack 4096
+
+ExitProcess proto, dwExitCode:dword
+
+.data
+COUNT = 5
+lab2array DWORD 1, 2, 3, 4, 5    ; array of 5 elements
+lab2sum DWORD ?                 ; to store the sum
+
+.code
+main PROC
+    mov eax, 0                  ; Clear EAX to store the sum
+
+    add eax, lab2array          ; Add element 1
+    add eax, lab2array+4        ; Add element 2
+    add eax, lab2array+8        ; Add element 3
+    add eax, lab2array+12       ; Add element 4
+    add eax, lab2array+16       ; Add element 5
+
+    mov lab2sum, eax            ; Store final result into lab2sum
+
+    invoke ExitProcess, 0
+main ENDP
+END main
