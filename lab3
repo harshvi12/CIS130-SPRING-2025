@@ -1,4 +1,4 @@
-;; Name: Harshvi Patel
+; Name: Harshvi Patel
 ; This program creates an array of 10 BYTE values (1–10)
 ; It calculates the sum of every other element (1+3+5+7+9) and stores it in memory
 
@@ -16,19 +16,18 @@ sum DWORD ?                            ; Memory location to store the result
 .code
 main proc
 
-    xor eax, eax                       ; Clear EAX to hold the running sum
-    xor ecx, ecx                       ; Clear ECX to use it as the index
+    xor eax, eax                       ; Clears EAX to hold the running sum
+    xor ecx, ecx                       ; Clears ECX to use it as the index
 
-    mov ecx, LENGTHOF myArray          ; Set ECX to number of elements in the array
-    shr ecx, 1                          ; Only process every other element (half the size)
+    mov ecx, 5                         ; Set ECX to 5 
+    
+L1:
+    movzx edx, myArray[ecx*TYPE myArray] ; Loads current BYTE into EDX (zero-extend)
+    add eax, edx                        ; Adds value in EDX to the sum in EAX
+    add ecx, 2                          ; Moves to the next every-other element
+    loop L1                             ; Repeats the loop until ECX = 0
 
-loopStart:
-    movzx edx, myArray[ecx*TYPE myArray] ; Load current BYTE into EDX (zero-extend)
-    add eax, edx                        ; Add value in EDX to the sum in EAX
-    add ecx, 2                          ; Move to the next every-other element
-    loop loopStart                      ; Repeat the loop until ECX = 0
-
-    mov sum, eax                       ; Store the result from EAX into the memory variable "sum"
+    mov sum, eax                       ; Stores the result from EAX into the memory variable "sum"
 
     invoke ExitProcess, 0              ; Exit the program
 main endp
