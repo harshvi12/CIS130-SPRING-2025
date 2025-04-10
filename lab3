@@ -1,0 +1,35 @@
+.386
+.model flat, stdcall
+.stack 4096
+
+ExitProcess proto
+
+.data
+myArray BYTE 1,2,3,4,5,6,7,8,9,10      ; Array with 10 values
+arraySize = ($ - myArray)             ; Automatically calculate size
+sum DWORD 0                           ; Memory location to store sum
+
+.code
+main proc
+
+    ; Initialize registers
+    xor eax, eax          ; EAX will hold the sum
+    xor ecx, ecx          ; ECX will be used as the loop counter (index)
+
+startLoop:
+    cmp ecx, arraySize    ; Check if we've reached the end of array
+    jae endLoop           ; If ECX >= arraySize, exit loop
+
+    movzx edx, myArray[ecx]  ; Load current byte into EDX (zero-extend)
+    add eax, edx             ; Add value to EAX (sum)
+
+    add ecx, 2               ; Move to next "every other" index
+
+    jmp startLoop            ; Repeat loop
+
+endLoop:
+    mov sum, eax             ; Store the sum in memory
+
+    invoke ExitProcess, 0
+main endp
+end main
