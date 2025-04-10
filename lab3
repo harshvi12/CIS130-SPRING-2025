@@ -1,3 +1,7 @@
+; Name: Harshvi Patel
+; This program creates an array of 5 DWORDs with values 1,2,3,4,5
+; It calculates the sum of all elements and stores it in memory 
+
 .386
 .model flat, stdcall
 .stack 4096
