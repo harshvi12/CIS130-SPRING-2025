@@ -19,10 +19,10 @@ main proc
     xor eax, eax                       ; Clears EAX to hold the running sum
     xor ecx, ecx                       ; Clears ECX to use it as the index
 
-    mov ecx, 5                         ; Set ECX to 5 
-    
+    mov ecx, 5                         ; Set ECX to 5 (for processing every other element)
+
 L1:
-    movzx edx, myArray[ecx*TYPE myArray] ; Loads current BYTE into EDX (zero-extend)
+    movzx edx, myArray[ecx]            ; Loads current BYTE into EDX (zero-extend)
     add eax, edx                        ; Adds value in EDX to the sum in EAX
     add ecx, 2                          ; Moves to the next every-other element
     loop L1                             ; Repeats the loop until ECX = 0
