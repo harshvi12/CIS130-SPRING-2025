@@ -1,6 +1,6 @@
-; Name: Harshvi Patel
-; This program creates an array of 5 DWORDs with values 1,2,3,4,5
-; It calculates the sum of all elements and stores it in memory 
+;; Name: Harshvi Patel
+; This program creates an array of 10 BYTE values (1–10)
+; It calculates the sum of every other element (1+3+5+7+9) and stores it in memory
 
 .386
 .model flat, stdcall
@@ -9,29 +9,27 @@
 ExitProcess proto, dwExitCode:DWORD
 
 .data
-myArray BYTE 1,2,3,4,5,6,7,8,9,10   ; Define an array with 10 decimal values
-arraySize = ($ - myArray)           ; Calculate size of the array 
-sum DWORD 0                         ; Memory location to store the result
+myArray BYTE 1,2,3,4,5,6,7,8,9,10      ; Defines an array with 10 decimal values
+arraySize = ($ - myArray)              ; Calculates size of the array
+sum DWORD ?                            ; Memory location to store the result
 
 .code
 main proc
 
-    xor eax, eax                    ; Clear EAX to hold the running sum
-    xor ecx, ecx                    ; Clear ECX to use it as the index 
+    xor eax, eax                       ; Clear EAX to hold the running sum
+    xor ecx, ecx                       ; Clear ECX to use it as the index
 
-startLoop:
-    cmp ecx, arraySize              ; Check if we've reached the end of the array
-    jae endLoop                     ; If ECX >= arraySize, exit the loop
+    mov ecx, LENGTHOF myArray          ; Set ECX to number of elements in the array
+    shr ecx, 1                          ; Only process every other element (half the size)
 
-    movzx edx, myArray[ecx]         ; Load current BYTE from array into EDX with zero-extension
-    add eax, edx                    ; Add value in EDX to the sum in EAX
+loopStart:
+    movzx edx, myArray[ecx*TYPE myArray] ; Load current BYTE into EDX (zero-extend)
+    add eax, edx                        ; Add value in EDX to the sum in EAX
+    add ecx, 2                          ; Move to the next every-other element
+    loop loopStart                      ; Repeat the loop until ECX = 0
 
-    add ecx, 2                      ; Move to the next every-other element 
-    jmp startLoop                   ; Repeat the loop
+    mov sum, eax                       ; Store the result from EAX into the memory variable "sum"
 
-endLoop:
-    mov sum, eax                    ; Store the result from EAX into the memory variable "sum"
-
-    invoke ExitProcess, 0           ; Exit the program
+    invoke ExitProcess, 0              ; Exit the program
 main endp
 end main
