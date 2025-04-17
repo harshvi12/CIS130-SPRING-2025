@@ -1,6 +1,6 @@
 comment /
-	 CIS130 Lab 4- Sum Every Other Array Element
-	Name: Harshvi Patel
+    DTCC CIS130 Assignment - Sum Every Other Array Element
+    Name: Harshvi Patel
 /
 
 .386
@@ -10,10 +10,10 @@ comment /
 .data
 
 array1 DWORD 1,2,3,4,5,6,7,8,9,10     ; 10 DWORD values
-array1sum DWORD ?                    ; to store result: 1+3+5+7+9 = 25
+array1sum DWORD ?                    ; will store result: 1+3+5+7+9 = 25
 
 array2 DWORD 11,12,13,14,15          ; 5 DWORD values
-array2sum DWORD ?                    ; to store result: 11+13+15 = 39
+array2sum DWORD ?                    ; will store result: 11+13+15 = 39
 
 ExitProcess proto,dwExitCode:dword
 
@@ -21,36 +21,38 @@ ExitProcess proto,dwExitCode:dword
 
 main proc
 
-	; Sum every other value in array1
-	mov esi, OFFSET array1           ; ESI points to array1
-	mov ecx, 5                       ; number of values to sum (1,3,5,7,9)
-	call SumEveryOther               ; calls procedure
-	mov array1sum, eax               ; stores result in array1sum
+	mov esi, OFFSET array1        ; point to array1
+	mov ecx, 5                    ; number of values to sum (1,3,5,7,9)
+	call SumEveryOther            ; call procedure
+	mov array1sum, eax            ; store result in array1sum
 
-	; Sum every other value in array2
-	mov esi, OFFSET array2           ; ESI points to array2
-	mov ecx, 3                       ; number of values to sum (11,13,15)
-	call SumEveryOther               ; calls procedure
-	mov array2sum, eax               ; stores result in array2sum
+	mov esi, OFFSET array2        ; point to array2
+	mov ecx, 3                    ; number of values to sum (11,13,15)
+	call SumEveryOther            ; call procedure
+	mov array2sum, eax            ; store result in array2sum
 
-	invoke ExitProcess,0             ; exit program
+	invoke ExitProcess, 0         ; exit program
 
 main endp
 
-;-----------------------------------------------------
-; SumEveryOther
-; Receives: ESI points to DWORD array
-;           ECX = number of every-other values to sum
-; Returns:  EAX = sum
-;-----------------------------------------------------
-SumEveryOther proc
-	mov eax, 0                       ; clears accumulator
+comment /
+    Procedure: SumEveryOther
+    Receives:
+        ESI = address of a DWORD array
+        ECX = number of every-other elements to sum
+    Returns:
+        EAX = total sum of every other DWORD in the array
+/
 
-L1:	add eax, [esi]                  ; adds current DWORD value
-	add esi, 8                       ; moves to every other element (2 DWORDs ahead)
-	loop L1                          ; repeat ECX times
+SumEveryOther proc
+	mov eax, 0                   ; clear sum
+
+L1:	add eax, [esi]              ; add current DWORD to sum
+	add esi, 8                   ; move to next every-other DWORD (skip 1)
+	loop L1                      ; repeat ECX times
 
 	ret
 SumEveryOther endp
 
 end main
+
