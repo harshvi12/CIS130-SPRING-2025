@@ -1,0 +1,74 @@
+comment /
+    Name: Harshvi Patel
+    Assignment 5: Assembly Conditional Processing
+/
+
+.386
+.model flat,stdcall
+.stack 4096
+
+.data
+
+prices DWORD 9,14,2                ; Array of food item prices
+quantities DWORD 2,2,2             ; Array of food item quantities
+
+arrayLength DWORD LENGTHOF prices  ; Number of elements in arrays
+total DWORD 0                      ; Total before discount
+finalTotal DWORD 0                 ; Total after applying discount
+
+ExitProcess proto, dwExitCode:dword
+
+.code
+main proc                           ; int main()
+
+    mov ecx, arrayLength            ; Load array length into ECX
+    xor ebx, ebx                    ; Set index (EBX) to 0
+    xor edx, edx                    ; Clear running total (EDX)
+
+loopStart:
+    mov eax, prices[ebx*TYPE prices] ; Load price into EAX
+    imul eax, quantities[ebx*TYPE quantities] ; Multiply price * quantity
+    add edx, eax                    ; Add the product to running total
+
+    inc ebx                         ; Increment index
+    loop loopStart                  ; Decrement ECX and repeat if not zero
+
+    mov total, edx                  ; Store running total into memory
+
+    mov eax, edx                    ; Copy total into EAX for discount checking
+    mov finalTotal, eax             ; Set initial finalTotal to total
+
+    cmp eax, 100                    ; Compare total with 100
+    jg discount10                   ; If greater, apply $10 discount
+
+    cmp eax, 50                     ; Compare total with 50
+    jg discount5                    ; If greater, apply $5 discount
+
+    invoke ExitProcess,0            ; No discount, exit
+
+discount10:
+    sub finalTotal, 10              ; Subtract $10 discount
+    invoke ExitProcess,0            ; Exit program
+
+discount5:
+    sub finalTotal, 5               ; Subtract $5 discount
+    invoke ExitProcess,0            ; Exit program
+
+main endp
+
+comment /
+Pseudocode:
+
+int total = 0;
+for (int i = 0; i < length; i++) {
+    total += price[i] * quantity[i];
+}
+if (total > 100) {
+    total -= 10;
+}
+else if (total > 50) {
+    total -= 5;
+}
+/
+
+end main
