@@ -1,7 +1,7 @@
 ;   TITLE Integer operation             (Exam4.asm)
 ;-----------------------------------------------------------------------------------------------------------
 ;   CIS130- Computer Organization Exam4
-;   Student Name: Harshvi Patel
+;   Student Name: Harshvi
 ;-----------------------------------------------------------------------------------------------------------
 ; 	This program will use an array in memory. you are asked to implements several procedures in assembly language to work
 ;   with these numbers to produce the result as specified in the requirements for the particular procedures and
@@ -9,15 +9,15 @@
 ;
 ;   Grading Policy:
 ;
-;	Use the correct registers for in your program		10 points
-;	Use the correct movement statements				    10 points
-;	Use the correct addition statements				    10 points
-;	Use the correct multiplication statements			10 points
-;	Use the correct label and loop statements			10 points
-;	Use the correct comparison and jump statements	    10 points
-;	Your program correct compile and run				10 points
-;	You have the correct results					    10 points
-;	Good comments									    10 points
+;	Use the correct registers for in your program   10 points
+;	Use the correct movement statements	        10 points
+;	Use the correct addition statements	        10 points
+;	Use the correct multiplication statements	10 points
+;	Use the correct label and loop statements       10 points
+;	Use the correct comparison and jump statements	10 points
+;	Your program correct compile and run		10 points
+;	You have the correct results		        10 points
+;	Good comments   				10 points
 ;   Pseudocode conversions                              10 points
 
 ; 	TO DO:
@@ -63,7 +63,7 @@ ArraySum PROC USES esi ecx
 ; Receives: ESI points to the array, ECX = array size
 ; Returns:  EAX = sum of the array elements
 ;-----------------------------------------------------------------------------------------------------------
-    mov  eax,0                    ; Set sum to zero
+    mov  eax,0                     ; Set sum to zero
 L1: add eax,[esi]                  ; Add each integer to sum
     add esi,TYPE DWORD             ; Move to next integer
     loop L1                        ; Repeat for array size
@@ -78,8 +78,8 @@ ArrayMultiplicationDivision PROC USES esi ecx
 ; Receives: ESI points to array, ECX = array size
 ; Returns: EAX = (product of elements) / INTEGER_COUNT
 ;-----------------------------------------------------------------------------------------------------------
-    mov eax,1                     ; Start with product = 1
-    mov ebx,ecx                   ; Save count in EBX
+    mov eax,1                      ; Start with product = 1
+    mov ebx,ecx                    ; Save count in EBX
 L2: 
     mul dword ptr [esi]            ; Multiply EAX by [ESI]
     add esi, TYPE DWORD            ; Move to next element
