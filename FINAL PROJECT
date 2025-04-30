@@ -1,7 +1,7 @@
 ;   TITLE Integer operation             (Exam4.asm)
 ;-----------------------------------------------------------------------------------------------------------
 ;   CIS130- Computer Organization Exam4
-;   Student Name: Harshvi
+;   Student Name: Harshvi Patel
 ;-----------------------------------------------------------------------------------------------------------
 ; 	This program will use an array in memory. you are asked to implements several procedures in assembly language to work
 ;   with these numbers to produce the result as specified in the requirements for the particular procedures and
