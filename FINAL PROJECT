@@ -3,21 +3,22 @@
 ;   CIS130- Computer Organization Exam4
 ;   Student Name: Harshvi Patel
 ;-----------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------
 ; 	This program will use an array in memory. you are asked to implements several procedures in assembly language to work
 ;   with these numbers to produce the result as specified in the requirements for the particular procedures and
 ;   displays the results to user
 ;
 ;   Grading Policy:
 ;
-;	Use the correct registers for in your program   10 points
-;	Use the correct movement statements	        10 points
-;	Use the correct addition statements	        10 points
-;	Use the correct multiplication statements	10 points
-;	Use the correct label and loop statements       10 points
-;	Use the correct comparison and jump statements	10 points
-;	Your program correct compile and run		10 points
-;	You have the correct results		        10 points
-;	Good comments   				10 points
+;	Use the correct registers for in your program		10 points
+;	Use the correct movement statements				    10 points
+;	Use the correct addition statements				    10 points
+;	Use the correct multiplication statements			10 points
+;	Use the correct label and loop statements			10 points
+;	Use the correct comparison and jump statements	    10 points
+;	Your program correct compile and run				10 points
+;	You have the correct results					    10 points
+;	Good comments									    10 points
 ;   Pseudocode conversions                              10 points
 
 ; 	TO DO:
@@ -27,6 +28,7 @@
 ;   You also need to translate these three method to pseudocode, java, or C++ code 
 ;   Make sure you can compile and run your code. 
 ;   You have to document your code with comments. 
+;-----------------------------------------------------------------------------------------------------------
 ;-----------------------------------------------------------------------------------------------------------
 .386
 .model flat,stdcall
@@ -42,6 +44,9 @@
 .code 
 
 ;-----------------------------------------------------------------------------------------------------------
+; You do not need to change any code in the main procedure
+;-----------------------------------------------------------------------------------------------------------
+
 main PROC
     mov    esi,OFFSET array
     mov    ecx,INTEGER_COUNT
@@ -55,6 +60,7 @@ main PROC
 	invoke ExitProcess,0
 main ENDP
 
+
 ;-----------------------------------------------------------------------------------------------------------
 ArraySum PROC USES esi ecx
 ;
@@ -63,101 +69,137 @@ ArraySum PROC USES esi ecx
 ; Receives: ESI points to the array, ECX = array size
 ; Returns:  EAX = sum of the array elements
 ;-----------------------------------------------------------------------------------------------------------
-    mov  eax,0                     ; Set sum to zero
-L1: add eax,[esi]                  ; Add each integer to sum
-    add esi,TYPE DWORD             ; Move to next integer
-    loop L1                        ; Repeat for array size
-    ret                            ; Sum is in EAX
+    mov 	eax,0        			; set the sum to zero
+L1: add    	eax,[esi]        		; add each integer to sum
+    add   	esi,TYPE DWORD    		; point to next integer
+    loop    L1            			; repeat for array size
+    ret          
+    ; sum is in EAX
 ArraySum ENDP
+
 
 ;-----------------------------------------------------------------------------------------------------------
 ArrayMultiplicationDivision PROC USES esi ecx
 ;
-; Calculate the product of array elements and divide by count.
+; Calculate the multiplications for an array of 32-bit integers
 ;
-; Receives: ESI points to array, ECX = array size
-; Returns: EAX = (product of elements) / INTEGER_COUNT
+; 
+;
+; Receives: ESI points to the array, ECX = array size
+; Returns:  EAX = result of the calculation
 ;-----------------------------------------------------------------------------------------------------------
-    mov eax,1                      ; Start with product = 1
-    mov ebx,ecx                    ; Save count in EBX
-L2: 
-    mul dword ptr [esi]            ; Multiply EAX by [ESI]
-    add esi, TYPE DWORD            ; Move to next element
-    loop L2                        ; Repeat for all elements
+    mov eax, 1              ; initialize result to 1 for multiplication
+L_mul:
+    mov edx, [esi]          ; load current element
+    imul eax, edx           ; multiply result with current element
+    add esi, TYPE DWORD     ; move to next element
+    loop L_mul              ; repeat for array size
 
-    mov edx,0                      ; Clear EDX before division
-    div ebx                        ; Divide EAX by EBX (INTEGER_COUNT)
-    ret
+    mov edx, 0              ; clear edx before division
+    mov ebx, divider        ; load the divider value
+    div ebx                 ; eax = eax / divider
+
+	ret
 ArrayMultiplicationDivision ENDP
 
+
 ;-----------------------------------------------------------------------------------------------------------
-; Pseudocode for ArrayMultiplicationDivision procedure ----------------------------------------------
-; int product = 1;
-; for (int i = 0; i < array.length; i++) {
-;     product = product * array[i];
-; }
-; product = product / array.length;
+; Provide the corresponding pseudocode, Java, or c++ equivalent to implement the same calculations. 
+; NOTE: this pseudo code will not be compiled by the assembler, but to use it as documentation 
+; and showing your understanding between assembly language and high level computer language. 
+; Your high language pseudo code should be this in this comments section.
 ;-----------------------------------------------------------------------------------------------------------
+;-- Your pseudocode for ArrayMultiplicationDivision procedure ----------------------------------------------
+; set result = 1
+; for each number in array:
+; result = result * number
+; result = result / divider
+
+;-----------------------------------------------------------------------------------------------------------
+
 
 ;-----------------------------------------------------------------------------------------------------------
 ArrayAverage PROC USES esi ecx
 ;
-; Calculate the average for an array of 32-bit integers.
+; Calculate the average for an array of 32-bit integers
 ;
-; Receives: ESI points to array, ECX = array size
-; Returns: EAX = average
+; You need to implement the code in this procedure to calculate avarge of the array entered by the user
+; For example: if user enters 1, 2, 3, 4, 5, 6  
+; The final result should be = (1 + 2 +3 + 4 + 5 + 6) / 6
+; Your program should still work if you changed the INTERGER_ACOUNT 
+; Please document your steps
+;
+; Receives: ESI points to the array, ECX = array size
+; Returns:  EAX = result of the calculation
 ;-----------------------------------------------------------------------------------------------------------
-    mov eax,0                     ; Start sum at 0
-    mov ebx,ecx                   ; Save count in EBX
-L3: 
-    add eax, [esi]                 ; Add element to sum
-    add esi, TYPE DWORD            ; Move to next element
-    loop L3                        ; Repeat for all elements
+  mov eax, 0              ; initialize sum to 0
+    mov edx, ecx            ; save array size for later division
+L_avg:
+    add eax, [esi]          ; add current element to sum
+    add esi, TYPE DWORD     ; move to next element
+    loop L_avg              ; repeat for array size
 
-    mov edx,0                      ; Clear EDX before division
-    div ebx                        ; Divide sum by INTEGER_COUNT to get average
+    mov ebx, edx            ; move size to ebx for division
+    mov edx, 0              ; clear edx before division
+    div ebx                 ; eax = sum / count
+
     ret
 ArrayAverage ENDP
 
+
 ;-----------------------------------------------------------------------------------------------------------
-; Pseudocode for ArrayAverage procedure -------------------------------------------------------------
-; int sum = 0;
-; for (int i = 0; i < array.length; i++) {
-;     sum = sum + array[i];
-; }
-; int average = sum / array.length;
+; Provide the corresponding pseudocode, Java, or c++ equivalent to implement the same calculations. 
+; NOTE: this pseudo code will not be compiled by the assembler, but to use it as documentation 
+; and showing your understanding between assembly language and high level computer language. 
+; Your high language pseudo code should be this in this comments section.
 ;-----------------------------------------------------------------------------------------------------------
+;-- Your pseudocode for ArrayAverage procedure -------------------------------------------------------------
+; set sum = 0
+; for each number in array:
+;     sum = sum + number
+; average = sum / number of elements
+;-----------------------------------------------------------------------------------------------------------
+
 
 ;-----------------------------------------------------------------------------------------------------------
 ArraySumEven PROC USES esi ecx
 ;
-; Calculate the sum of only the even numbers in the array.
+; Calculate the sum of the array, only summarize the even numbers
 ;
-; Receives: ESI points to array, ECX = array size
-; Returns: EAX = sum of even elements
+; You need to implement the code in this procedure to add up only the even numbers in this array
+; For example, if user enter number 3, 5, 6, 2, 11, 10, the result = 6 + 2 + 10, ignore 3, 5, and 11
+; Your program should still work if you changed the INTERGER_ACOUNT 
+; Please document your steps
+;
+; Receives: ESI points to the array, ECX = array size
+; Returns:  EAX = result of the calculation
 ;-----------------------------------------------------------------------------------------------------------
-    mov eax,0                     ; Start sum at 0
-L4: 
-    mov ebx, [esi]                 ; Load current element into EBX
-    test bl,1                      ; Check if number is odd (lowest bit = 1)
-    jnz SkipAdd                    ; If odd, skip this number
+  mov eax, 0              ; initialize sum of even numbers
+L_even:
+    mov edx, [esi]          ; load current element into edx
+    test edx, 1             ; test if number is odd
+    jnz skip                ; if odd, skip it
+    add eax, edx            ; if even, add to sum
+skip:
+    add esi, TYPE DWORD     ; move to next element
+    loop L_even             ; repeat for array size
 
-    add eax, ebx                   ; If even, add it to the sum
-
-SkipAdd:
-    add esi, TYPE DWORD            ; Move to next element
-    loop L4                        ; Repeat for all elements
     ret
 ArraySumEven ENDP
 
+
 ;-----------------------------------------------------------------------------------------------------------
-; Pseudocode for ArraySumEven procedure -------------------------------------------------------------
-; int sum = 0;
-; for (int i = 0; i < array.length; i++) {
-;     if (array[i] % 2 == 0) {
-;         sum = sum + array[i];
-;     }
-; }
+; Provide the corresponding pseudocode, Java, or c++ equivalent to implement the same calculations. 
+; NOTE: this pseudo code will not be compiled by the assembler, but to use it as documentation 
+; and showing your understanding between assembly language and high level computer language. 
+; Your high language pseudo code should be this in this comments section.
+;-----------------------------------------------------------------------------------------------------------
+;-- Your pseudocode for ArraySumEven procedure -------------------------------------------------------------
+;set sum = 0
+; for each number in array:
+;     if number mod 2 == 0:
+;         sum = sum + number
+;-----------------------------------------------------------------------------------------------------------
 ;-----------------------------------------------------------------------------------------------------------
 
 END main
